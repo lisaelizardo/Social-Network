@@ -1,7 +1,7 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
-  // get all thoughts
+
   getThoughts(req, res) {
     Thought.find()
       .sort({ createdAt: -1 })
@@ -13,7 +13,7 @@ const thoughtController = {
         res.status(500).json(err);
       });
   },
-  // get single thought by id
+
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .then((dbThoughtData) => {
@@ -27,7 +27,7 @@ const thoughtController = {
         res.status(500).json(err);
       });
   },
-  // create a thought
+
   createThought(req, res) {
     Thought.create(req.body)
       .then((dbThoughtData) => {
@@ -49,7 +49,7 @@ const thoughtController = {
         res.status(500).json(err);
       });
   },
-  // update thought
+
   updateThought(req, res) {
     Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $set: req.body }, { runValidators: true, new: true })
       .then((dbThoughtData) => {
@@ -71,12 +71,11 @@ const thoughtController = {
           return res.status(404).json({ message: 'No thought with this id!' });
         }
 
-        // remove thought id from user's `thoughts` field
-        return User.findOneAndUpdate(
-          { thoughts: req.params.thoughtId },
-          { $pull: { thoughts: req.params.thoughtId } },
-          { new: true }
-        );
+        // return User.findOneAndUpdate(
+        //   { thoughts: req.params.thoughtId },
+        //   { $pull: { thoughts: req.params.thoughtId } },
+        //   { new: true }
+        // );
       })
       .then((dbUserData) => {
         if (!dbUserData) {
@@ -90,7 +89,6 @@ const thoughtController = {
       });
   },
 
-  // add a reaction to a thought
   addReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -108,7 +106,7 @@ const thoughtController = {
         res.status(500).json(err);
       });
   },
-  // remove reaction from a thought
+
   removeReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
